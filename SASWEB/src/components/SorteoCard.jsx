@@ -1,12 +1,20 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./SorteoCard.css";
 
-const SorteoCard = ({ sorteo, onClick }) => {
+const SorteoCard = ({ sorteo }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/sorteos/${sorteo.id}`, sorteo);
+  };
+
   return (
     <div
       className="card shadow-sm border-0 rounded-4 text-center m-3 sorteo-card"
-      onClick={onClick}
+      onClick={handleClick}
+      style={{ cursor: "pointer" }}
     >
       <img
         src={sorteo.imagen}

@@ -11,14 +11,14 @@ const Home = () => {
   useEffect(() => {
     const obtenerSorteos = async () => {
       const data = await fetchSorteos();
-      // Desempaquetar si el array viene anidado [[...]]
+      // para desempacar en caso de que el sorteo venga en array anidado
       const sorteosData = Array.isArray(data[0]) ? data[0] : data;
       setSorteos(sorteosData);
     };
     obtenerSorteos();
   }, []);
 
-  // ✅ Filtrar por estado activo y por nombre
+  // Filtrar por estado activo y por nombre
   const sorteosFiltrados = sorteos.filter(
     (s) =>
       s.estado === "activo" &&

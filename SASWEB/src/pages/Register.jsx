@@ -23,7 +23,7 @@ export default function Register() {
 
         <p className="text-center small mt-3">
           ¿Ya tienes cuenta?{" "}
-          <Link to="/" className="btn btn-link p-0 fw-bold text-decoration-none">
+          <Link to="/login" className="btn btn-link p-0 fw-bold text-decoration-none">
             Ir a Login
           </Link>
         </p>
