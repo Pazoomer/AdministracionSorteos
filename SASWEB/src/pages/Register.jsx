@@ -105,7 +105,7 @@ export default function Register() {
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+={}\[\]|\\:;"'<,>./?~`-])(?=.{6,})/;
 
     if (!passwordRegex.test(password)) {
-      setError("La contraseña debe tener al menos 6 caracteres, 1 mayúscula, 1 minúscula, y 1 número o caracter especial.");
+      setError("La contraseña debe tener al menos 6 caracteres, 1 mayúscula, 1 minúscula, y 1 caracter especial.");
       return;
     }
 
@@ -140,28 +140,27 @@ export default function Register() {
   const formWidth = "24rem";
 
   return (
-    <div className="d-flex justify-content-center align-items-start" style={{ backgroundColor: 'white', minHeight: '100vh' }}>
+    <div className="d-flex justify-content-center align-items-start" style={{ backgroundColor: customBgColor, minHeight: '100vh', width: '100%' }}>
 
+      {/* 1. Contenedor del Título y Formulario */}
       <div
-        className="pt-5 pb-5"
-        style={{
-          width: '100%',
-          backgroundColor: customBgColor,
-          color: textColor,
-          borderBottomLeftRadius: '50px',
-          borderBottomRightRadius: '50px',
-          boxShadow: '0 8px 16px rgba(0, 0, 0, 0.1)'
-        }}
+        className="pt-5 pb-5 w-100" // w-100 asegura que ocupe todo el ancho disponible
       >
-        <div className="mx-auto" style={{ width: formWidth }}>
+        {/* 2. Contenedor Interno: Aplica el ancho máximo solo en dispositivos grandes */}
+        <div
+          className="mx-auto px-4" // mx-auto para centrar; px-4 añade padding horizontal en móviles
+          // Usamos clases de Bootstrap para ancho máximo: max-width: 400px o sm/md/lg
+          style={{ maxWidth: '400px', color: textColor }}
+        >
 
           <h1 className="text-center fw-bold mb-5" style={{ fontSize: '2.5rem' }}>
             Cree una cuenta
           </h1>
 
+          {/* ... (Mensaje de error y Formulario sin cambios) ... */}
           {error && (
             <div
-              className={`alert ${error.startsWith('Registro exitoso') ? 'alert-success' : 'alert-danger'} text-center py-2`} // Estilo condicional para éxito/error
+              className={`alert ${error.startsWith('Registro exitoso') ? 'alert-success' : 'alert-danger'} text-center py-2`}
               style={{ fontSize: "0.95rem", borderRadius: "0.5rem", marginBottom: "1.5rem" }}
             >
               {error}
@@ -214,7 +213,7 @@ export default function Register() {
 
           <p className="text-center small mt-0">
             ¿Ya tienes cuenta?{" "}
-            <Link to="/" className="fw-bold" style={{ color: textColor, textDecoration: 'none' }}>
+            <Link to="/Login" className="fw-bold" style={{ color: textColor, textDecoration: 'none' }}>
               Iniciar sesión
             </Link>
           </p>

@@ -39,7 +39,6 @@ export default function Login() {
   const buttonBgColor = "#5c5c5c";
   const buttonHoverBgColor = "#4a4a4a";
   const textColor = "black";
-  const formWidth = "28rem";
 
   const CustomButton = ({ children, ...props }) => (
     <button
@@ -61,12 +60,13 @@ export default function Login() {
 
   return (
     <div
-      className="d-flex justify-content-center align-items-center vh-100"
+      className="d-flex justify-content-center align-items-center vh-100 w-100" // w-100 asegura que ocupe todo el ancho
       style={{ backgroundColor: customBgColor }}
     >
+      {/* Contenedor que limita el ancho solo en desktop y añade padding en móvil */}
       <div
-        className="mt-5"
-        style={{ width: formWidth, color: textColor, padding: "2rem" }}
+        className="mx-auto px-4" // mx-auto para centrar; px-4 para padding lateral en móvil
+        style={{ maxWidth: '450px', color: textColor }} // Máximo 450px para desktop
       >
         {/* Título */}
         <h1 className="text-center fw-bold mb-1" style={{ fontSize: "2.5rem" }}>
@@ -82,7 +82,7 @@ export default function Login() {
         {/* Mensaje de error (solo si existe) */}
         {error && (
           <div
-            className="alert alert-danger text-center py-2"
+            className={`alert ${error.startsWith('✅') ? 'alert-success' : 'alert-danger'} text-center py-2`}
             style={{
               fontSize: "0.95rem",
               borderRadius: "0.5rem",
@@ -166,7 +166,13 @@ export default function Login() {
 
           {/* Botón */}
           <div className="mt-4 mb-3">
-            <CustomButton type="submit">Iniciar Sesión</CustomButton>
+            <CustomButton
+              type="submit"
+              buttonBgColor={buttonBgColor}
+              buttonHoverBgColor={buttonHoverBgColor}
+            >
+              Iniciar Sesión
+            </CustomButton>
           </div>
         </form>
 
