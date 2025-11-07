@@ -2,13 +2,20 @@ import React, { useEffect, useState } from "react";
 import SorteoCard from "../components/SorteoCard";
 import { fetchSorteos } from "../services/api";
 import Sidebar from "../components/Sidebar";
+import { getSession } from "../api";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const Home = () => {
   const [sorteos, setSorteos] = useState([]);
   const [filtro, setFiltro] = useState("");
+  const [usuario, setUsuario] = useState(null);
 
   useEffect(() => {
+    // Obtener sesión actual
+    const session = getSession();
+    console.log("Sesión obtenida:", session);
+    setUsuario(session.user);
+
     const obtenerSorteos = async () => {
       const data = await fetchSorteos();
       // para desempacar en caso de que el sorteo venga en array anidado
@@ -25,6 +32,9 @@ const Home = () => {
       s.nombre.toLowerCase().includes(filtro.toLowerCase())
   );
 
+  // Mostrar nombre o "Invitado"
+  const nombreUsuario = usuario?.nombre || "Invitado";
+
   return (
     <div className="d-flex">
       {/* Sidebar */}
@@ -33,6 +43,21 @@ const Home = () => {
       {/* Contenido principal */}
       <div className="flex-grow-1" style={{ marginLeft: "80px" }}>
         <div className="container py-4">
+
+          {/* Etiqueta del usuario */}
+          <p
+            style={{
+              color: "#000",
+              fontSize: "0.9rem",
+              fontWeight: "400",
+              maxWidth: "100%",
+              marginBottom: "0.5rem",
+            }}
+          >
+            {nombreUsuario}
+          </p>
+
+          {/* Título */}
           <h4 className="fw-bold mb-3">Sorteos disponibles</h4>
 
           {/* Barra de búsqueda */}

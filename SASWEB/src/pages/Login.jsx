@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
 import { FaEyeSlash } from "react-icons/fa";
 import { useState } from "react";
-import { loginUser, saveToken } from "../api";
+import { loginUser, getUserProfile, saveSession } from "../api";
 
 export default function Login() {
   const [passwordShown, setPasswordShown] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [correo, setCorreo] = useState("");
+  const [contrasenia, setContrasenia] = useState("");
   const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
@@ -14,13 +14,18 @@ export default function Login() {
     setError(""); // limpia mensaje previo
 
     try {
-      const data = await loginUser(email, password);
-      if (!data.user || !data.token) {
+      const data = await loginUser(correo, contrasenia);
+      if (!data.token) {
         setError("Correo o contraseña incorrectos. Intenta de nuevo.");
         return;
       } else {
-        saveSession(data.token, data.user); // guarda todo
-        console.log("Login exitoso:", data.user);
+        const userData = await getUserProfile(data.token);
+        console.log("Datos del usuario:", userData);
+        saveSession(data.token, userData); // guarda todo
+        // Redirigir al login
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 1000);
       }
 
     } catch (error) {
@@ -98,7 +103,7 @@ export default function Login() {
           {/* Campo Correo */}
           <div className="mb-4">
             <label
-              htmlFor="email"
+              htmlFor="correo"
               className="form-label fw-normal"
               style={{ fontSize: "1.2rem" }}
             >
@@ -107,8 +112,8 @@ export default function Login() {
             <input
               type="email"
               className="form-control"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={correo}
+              onChange={(e) => setCorreo(e.target.value)}
               style={{
                 backgroundColor: inputBgColor,
                 height: "3.5rem",
@@ -134,8 +139,8 @@ export default function Login() {
               <input
                 type={passwordShown ? "text" : "password"}
                 className="form-control"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={contrasenia}
+                onChange={(e) => setContrasenia(e.target.value)}
                 style={{
                   backgroundColor: inputBgColor,
                   height: "3.5rem",
