@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { FaEyeSlash } from "react-icons/fa";
 import { useState } from "react";
+import { registerUser } from "../api";
 
 const CustomButton = ({ children, buttonBgColor, buttonHoverBgColor, ...props }) => (
   <button
@@ -102,7 +103,7 @@ export default function Register() {
     }
 
     // Requiere: 1 minúscula, 1 mayúscula, 1 número, 1 caracter especial y 6+ caracteres de largo.
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+={}\[\]|\\:;"'<,>./?~`-])(?=.{6,})/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+={}\[\]|\\:;"'<,>./?~`-])(?=.{6,})/;
 
     if (!passwordRegex.test(password)) {
       setError("La contraseña debe tener al menos 6 caracteres, 1 mayúscula, 1 minúscula, y 1 número o caracter especial.");
@@ -115,13 +116,26 @@ export default function Register() {
     }
 
     try { // Logica de registro
-      const data = await registerUser({ name, email, password });
-      saveSession(data.token, data.user);
+      const data = await registerUser(name, email, password);
       console.log("Registro exitoso simulado:", { name, email, password });
       setError("Registro exitoso. Redirigiendo..."); // Mensaje temporal de éxito
+      // Redirigir al login
+      setTimeout(() => {
+        window.location.href = "/Login";
+      }, 1000);
     } catch (error) {
-      console.error(error);
-      setError("No se pudo registrar. Intenta de nuevo más tarde.");
+      console.error("Error en handleSubmit:", error.message);
+
+      // Detectar el tipo de error por mensaje
+      if (error.message.includes("ya registrado") || error.message.includes("existente")) {
+        setError("El usuario ya está registrado. Intenta con otro correo.");
+      } else if (error.message.includes("Datos de registro no válidos")) {
+        setError("Los datos ingresados no son válidos. Revisa el formulario.");
+      } else if (error.message.includes("API") || error.message.includes("servidor")) {
+        setError("Error en el servidor. Intenta más tarde.");
+      } else {
+        setError("No se pudo registrar. Verifique los datos o intente más tarde.");
+      }
     }
   };
 
@@ -137,7 +151,6 @@ export default function Register() {
   const buttonBgColor = "#5c5c5c";
   const buttonHoverBgColor = "#4a4a4a";
   const textColor = "black";
-  const formWidth = "24rem";
 
   return (
     <div className="d-flex justify-content-center align-items-start" style={{ backgroundColor: 'white', minHeight: '100vh' }}>
