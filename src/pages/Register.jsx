@@ -151,6 +151,7 @@ export default function Register() {
   const buttonBgColor = "#5c5c5c";
   const buttonHoverBgColor = "#4a4a4a";
   const textColor = "black";
+  const formWidth = "28rem";
 
   return (
     <div className="d-flex justify-content-center align-items-start" style={{ backgroundColor: 'white', minHeight: '100vh' }}>
