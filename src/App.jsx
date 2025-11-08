@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Sidebar from "./components/Sidebar";
@@ -10,21 +10,19 @@ import SorteoDetalles from "./pages/SorteoDetalles";
 
 function App() {
   return (
-    <div className="d-flex">
-      <Sidebar />
-      <div className="flex-grow-1" style={{ marginLeft: "80px" }}>
-        <Routes>
-          {/* Página principal con los sorteos */}
-          <Route path="/" element={<Home />} />
-          {/* Página de inicio de sesión */}
-          <Route path="/login" element={<Login />} />
-          {/* Página de registro */}
-          <Route path="/register" element={<Register />} />
-          {/* Página de detalles del sorteo */}
-          <Route path="/sorteos/:id" element={<SorteoDetalles />} />
-        </Routes>
+    <BrowserRouter basename="/AdministracionSorteos">
+      <div className="d-flex">
+        <Sidebar />
+        <div className="flex-grow-1" style={{ marginLeft: "80px" }}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/sorteos/:id" element={<SorteoDetalles />} />
+          </Routes>
+        </div>
       </div>
-    </div>
+    </BrowserRouter>
   );
 }
 
